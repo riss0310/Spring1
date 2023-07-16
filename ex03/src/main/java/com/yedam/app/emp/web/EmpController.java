@@ -2,12 +2,15 @@ package com.yedam.app.emp.web;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,16 +23,14 @@ public class EmpController {
 	@Autowired
 	EmpService empService;
 	
-	
-	//조회(데이터, 일반페이지) ->Get
-	//등록, 수정, 삭제 	    ->POST
+	//조회(데이터, 일반페이지) -> GET
+	//등록, 수정, 삭제       -> POST
 	
 	//전체조회
 	@GetMapping("/empList")
 	public String getEmpAllList(Model model) {
 		model.addAttribute("empList", empService.getEmpAll());
-		return "emp/empList"; //emp/list/empList로 작성해도 무방함
-		// '/WEB-INF/views/emp/empList.jsp' 
+		return "emp/empList"; // '/WEB-INF/views/emp/empList.jsp'		
 	}
 	
 	//단건조회
@@ -55,29 +56,28 @@ public class EmpController {
 			result = "정상적으로 등록되지 않았습니다.";
 		}else {
 			result = "정상적으로 등록되었습니다."
-					+"\n 등록된 사원의 사번은  " + empId + "입니다.";
-		}
+					+ "\n 등록된 사원의 사번은 " + empId + "입니다.";
+		}		
 		rtt.addFlashAttribute("result", result);
-		return "redirect:empList"; //
+		return "redirect:empList";
 	}
 	
-	//수정 - Process /페이지로 요청x
-	// 1) Client -  JSON-> Server : @RequestBody
-	// 2) Server - JSON-> Client : @ResponseBody
+	//수정 - Process
+	// 1) Client -JSON-> Server : @RequestBody
+	// 2) Server -JSON-> Client : @ResponseBody
 	@PostMapping("/empUpdate")
-	@ResponseBody //method위에 존재해야함
+	@ResponseBody
 	public Map<String, String> empUpdateProcess(@RequestBody EmpVO empVO){
 		return empService.updateEmp(empVO);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	//삭제 - Process
+	@PostMapping(value="/empDelete", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String empDeleteProcess(@RequestParam(name = "id") int employeeId, HttpServletResponse res) {
+		Map<String, String> map = empService.deleteEmp(employeeId);
+		return map.get("결과");
+	}
 	
 	
 	

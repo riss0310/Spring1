@@ -23,8 +23,8 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) { //model이 있다는 것은돌려줄 데이터가 있다는 의미/ spring의 모든 메소드가 request를 parsing하는 것은 아님
-		logger.info("Welcome home! The client locale is {}.", locale); 
+	public String home(Locale locale, Model model) {
+		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);

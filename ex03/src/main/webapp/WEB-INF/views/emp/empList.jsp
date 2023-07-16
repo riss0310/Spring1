@@ -1,19 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!-- 우리나라 형식으로 표현하려면 따로 처리해야함 그 처리1 -->
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>전체조회</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <style type="text/css">
-table, th, td {
-	border: 4px solid #af8acf;
-	text-align: center;
-	background-color: lavender
-}
+	table, th, td {
+		border : 1px solid black;
+	}
 </style>
 </head>
 <body>
@@ -32,31 +30,55 @@ table, th, td {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${ empList }" var="emp">
+			<c:forEach items="${empList }" var="emp">
 				<tr onclick="location.href='empInfo?employeeId=${emp.employeeId}'">
 					<td>${emp.employeeId }</td>
 					<td>${emp.firstName }</td>
 					<td>${emp.lastName }</td>
 					<td>${emp.email }</td>
-					<td><fmt:formatDate value="${emp.hireDate }"
-							pattern="💜yy년MM월dd일💜" /> <!-- 우리나라 형식으로 표현하려면 따로 처리해야함 그 처리2 --></td>
-					<!-- fmt는 일반적인 value속성에서도 사용할 수 있다.  -->
+					<td>					
+						<fmt:formatDate value="${emp.hireDate }" pattern="yyyy년MM월dd일"/>
+					</td>
 					<td>${emp.jobId }</td>
 					<td>
-						<!-- 주석은 자바주석이므로 jstl이나 el은 문법그대로 주석하지 않기--> <fmt:formatNumber
-							value="${emp.salary }" pattern="$#,###" />
+						<fmt:formatNumber value="${emp.salary }" pattern="$#,###"/>
 					</td>
-					<td><button type="button">삭제</button></td>
+					<td><button type="button" >삭제</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
 	<script>
-		printMessage(`${result}`)	//el태그는 출력만 함-> ','같은거 없음 ``를 사용하려 가둠
+		printMessage(`${result}`);	
 	
 		function printMessage(msg){
 			if(msg == null || msg == '') return;
 			alert(msg);
+		}
+		
+		$('button:contains("삭제")').on('click', ajaxDeleteEmp);
+		
+		function ajaxDeleteEmp(e){
+			let empId = e.currentTarget.closest('tr').firstElementChild.textContent;
+			
+			$.ajax({
+				url : 'empDelete',
+				type : 'post',
+				data : { id : empId }
+			})
+			.done( data => {
+				if(data == 'Success'){
+					let btn = e.currentTarget;
+					$(btn).closest('tr').remove();
+				}else{
+					alert('삭제되지 않았습니다.');
+				}
+			})
+			.fail( reject => console.log(reject));
+			
+			//e.stopPropagation();
+			return false;
+			
 		}
 	</script>
 </body>

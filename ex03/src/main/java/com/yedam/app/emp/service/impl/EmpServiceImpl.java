@@ -12,18 +12,15 @@ import com.yedam.app.emp.service.EmpService;
 import com.yedam.app.emp.service.EmpVO;
 import com.yedam.app.tx.mapper.AaaMapper;
 
-//빼먹지마~!~!!!! implement 위에는 모두 @service임!!!!\
 @Service
 public class EmpServiceImpl implements EmpService {
 
-	// @Autowired는 페이지 마다 작성하기
 	@Autowired
 	EmpMapper empMapper;
-
+	
 	@Autowired
 	AaaMapper aaaMapper;
 
-	@Autowired
 	@Override
 	public List<EmpVO> getEmpAll() {
 		return empMapper.selectEmpAllList();
@@ -37,9 +34,9 @@ public class EmpServiceImpl implements EmpService {
 	@Override
 	public int insertEmp(EmpVO empVO) {
 		int result = empMapper.insertEmpInfo(empVO);
-		if (result == 1) {
+		if(result == 1) {
 			return empVO.getEmployeeId();
-		} else {
+		}else {
 			return -1;
 		}
 	}
@@ -47,17 +44,18 @@ public class EmpServiceImpl implements EmpService {
 	@Override
 	public String updateEmpSal(int empId, int raise) {
 		String message = null;
-
+		
 		EmpVO empVO = new EmpVO();
 		empVO.setEmployeeId(empId);
-
+		
 		int result = empMapper.updateEmpSal(empVO, raise);
-
-		if (result == 1) {
+		
+		if(result == 1) {
 			message = "정상적으로 급여를 갱신했습니다.";
-		} else {
+		}else {
 			message = "작업이 실패했습니다. 정보를 확인해주세요.";
 		}
+		
 		return message;
 	}
 
@@ -67,13 +65,14 @@ public class EmpServiceImpl implements EmpService {
 		
 		map.put("사원번호", String.valueOf(empVO.getEmployeeId()));
 		
-		int result = empMapper.updateInfo(empVO);
+		int result = empMapper.updateEmpInfo(empVO);
 		
-		if(result ==1) {
+		if(result == 1) {
 			map.put("결과", "Success");
 		}else {
 			map.put("결과", "Fail");
 		}
+		
 		return map;
 	}
 
@@ -85,13 +84,13 @@ public class EmpServiceImpl implements EmpService {
 		
 		int result = empMapper.deleteEmpInfo(empId);
 		
-		if(result ==1) {
+		if(result == 1) {
 			map.put("결과", "Success");
 		}else {
 			map.put("결과", "Fail");
 		}
+		
 		return map;
 	}
+
 }
-
-

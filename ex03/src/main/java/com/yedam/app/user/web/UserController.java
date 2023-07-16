@@ -13,46 +13,49 @@ import com.yedam.app.user.service.UserVO;
 
 @Controller
 public class UserController {
+	
 	@Autowired
 	EmpService empService;
-
-	@RequestMapping("/getObject") // '/'루트는 붙여도 안붙여도 상관없대
+	
+	@RequestMapping("getObject")
 	public String getCommandObject(UserVO userVO) {
-		System.out.printf("=============== %s\n", userVO.getName());
-		System.out.printf("=============== %d\n", userVO.getAge());
+		System.out.printf("============= %s\n", userVO.getName());
+		System.out.printf("============= %d\n", userVO.getAge());
 		return "";
 	}
-
+	
 	@RequestMapping("getList")
 	public String getCommandArray(UserListVO listVO) {
-		for (UserVO userVO : listVO.getList()) {
-			System.out.printf("=============== %s\n", userVO.getName());
-			System.out.printf("=============== %d\n", userVO.getAge());
+		
+		for(UserVO userVO : listVO.getList()) {
+			System.out.printf("============= %s\n", userVO.getName());
+			System.out.printf("============= %d\n", userVO.getAge());
 		}
-
-		return "";
-	}
-
-	@RequestMapping("getValues")
-	public String getParamValues(@RequestParam(required = false) String name,
-								 @RequestParam(defaultValue = "1") Integer age) {
-		System.out.printf("=============== %s\n", name);
-		System.out.printf("=============== %d\n", age);
+		
 		return "";
 	}
 	
-	@RequestMapping("users/{id}")	//{}이 위치에 값을 담겠다.
-	public String getPathValues(@PathVariable("empid") String id) { //경로에 데이터 숨기기
-		System.out.printf("=============== %s\n", id);
+	@RequestMapping("getValues")
+	public String getParamValues(@RequestParam(required = false) String name, 
+								 @RequestParam(defaultValue = "1") Integer age) {
+		System.out.printf("============= %s\n", name);
+		System.out.printf("============= %d\n", age);
 		return "";
 	}
-
+	
+	@RequestMapping("users/{empid}")
+	public String getPathValues(@PathVariable("empid") String id) {
+		System.out.printf("============= %s\n", id);
+		return "";
+	}
+	
 	@RequestMapping("getJsonVal")
 	public String getJsonValues(@RequestBody UserVO userVO) {
-		System.out.printf("=============== %s\n", userVO.getName());
-		System.out.printf("=============== %d\n", userVO.getAge());
+		
+		System.out.printf("============= %s\n", userVO.getName());
+		System.out.printf("============= %d\n", userVO.getAge());
+		
 		return "";
 	}
-	
 	
 }

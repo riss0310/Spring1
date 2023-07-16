@@ -21,70 +21,68 @@ public class EmpMapperClient {
 
 	@Autowired
 	EmpMapper empMapper;
-
-	// @Test
+	
+	@Test
 	public void selectAllEmp() {
-		// 전체조회
+		//전체조회
 		List<EmpVO> empList = empMapper.selectEmpAllList();
 		assertTrue(!empList.isEmpty());
-
 	}
-
-	// @Test
+	
+	@Test
 	public void selectEmpInfo() {
-		// 단건조회
+		//단건조회
 		EmpVO empVO = new EmpVO();
 		empVO.setEmployeeId(100);
-
+		
 		EmpVO findVO = empMapper.selectEmpInfo(empVO);
 		assertEquals(findVO.getLastName(), "King");
 	}
-
-	// @Test
+	
+	@Test
 	public void insertEmpInfo() {
-		// 등록
+		//등록
 		EmpVO empVO = new EmpVO();
 		empVO.setLastName("Kang");
 		empVO.setFirstName("San-Ha");
 		empVO.setEmail("shKang@google.com");
 		empVO.setJobId("IT_PROG");
 		empVO.setSalary(5000);
-		// 여기서 employeeId는 int 이므로 아직 값은 0이다.
-
+		
 		empMapper.insertEmpInfo(empVO);
 		assertNotEquals(empVO.getEmployeeId(), 0);
 	}
-
-	// @Test
+	
+	@Test
 	public void updateEmpSal() {
-		// 급여 갱신
+		//급여 갱신
 		EmpVO empVO = new EmpVO();
 		empVO.setEmployeeId(1001);
-
+		
 		int result = empMapper.updateEmpSal(empVO, 10);
-		assertEquals(result, 1);
+		assertEquals(result, 1);		
 	}
-
-	// @Test
-	public void updateInfo() {
+	
+	@Test
+	public void updateEmpInfo() {
+		// 사원 정보 수정
 		EmpVO empVO = new EmpVO();
 		empVO.setEmployeeId(1001);
-
+		
 		EmpVO findVO = empMapper.selectEmpInfo(empVO);
 		System.out.println(findVO);
-
+		
 		empVO.setEmail("sanH@naver.com");
 		empVO.setSalary(6200);
-
-		int result = empMapper.updateInfo(empVO);
+		
+		int result = empMapper.updateEmpInfo(empVO);
 		assertEquals(result, 1);
 	}
-
+	
 	@Test
 	public void deleteEmpInfo() {
+		//삭제
 		int result = empMapper.deleteEmpInfo(1001);
 		assertEquals(result, 1);
 	}
-
-	
 }

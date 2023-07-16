@@ -14,14 +14,15 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<!-- mapping=files해도 됨 굳이 1:1 개별로 하지 않아도 됨 무슨말이지 하위에는 '*' location=물리적인 위치, '/'로 끝나야해 -->
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	<!-- Resolve는 필요에 따라 여러개 작동가능  -->	
+	
 	<context:component-scan base-package="com.yedam.app" />
+	
+	
 	
 </beans:beans>
